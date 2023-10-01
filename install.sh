@@ -17,6 +17,7 @@ BASEDIR=$(cd --"$(dirname --"${BASH_SOURCE[0]}")"&>/dev/null&&pwd)
 
 echo "Copying templates and scripts"
 cp $BASEDIR/src/c8000vcm.yml /opt/unetlab/http/templates/intel/c8000vcm.yml
+cp $BASEDIR/src/c8000vcm.yml /opt/unetlab/http/templates/amd/c8000vcm.yml
 cp $BASEDIR/src/config_c8000vcm.py /opt/unetlab/config_scripts/config_c8000vcm.py
 cp $BASEDIR/src/prep_c8000vcm.py /opt/unetlab/config_scripts/prep_c8000vcm.py
 
