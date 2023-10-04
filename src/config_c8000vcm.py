@@ -208,7 +208,8 @@ def config_get(handler):
 def config_put(handler):
     while True:
         try:
-           i = handler.expect(['%IOSXE-5-PLATFORM: R0/0: vip-bootstrap: All daemons up','%IOSXE-3-PLATFORM: R0/0: vip-bootstrap: Error extracting config from /bootflash/ciscosdwan.cfg'], timeout)
+           i = handler.expect(['%IOSXE-5-PLATFORM: R0/0: vip-bootstrap: All daemons up',
+               '%IOSXE-3-PLATFORM: R0/0: vip-bootstrap: Error extracting config'], timeout)
         except:
            return False
         return True

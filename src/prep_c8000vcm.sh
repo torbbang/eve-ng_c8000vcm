@@ -8,8 +8,10 @@
 # @copyright 2023 Torbjørn Bang
 # @license BSD-3-Clause https://github.com/torbbang/eve-ng_c8000vcm/blob/main/LICENSE
 
-# Insert eve-ng configscraper user
-sed -i '0,/username \w/s//username eveconfigscraper privilege 15 secret eveconfigscraper\n&/' $1/startup-config 
+# Insert eve-ng configscraper user if it doesn't exist
+if ! grep -q "username eveconfigscraper" $1/startup-config; then 
+	sed -i '0,/username \w/s//username eveconfigscraper privilege 15 secret eveconfigscraper\n&/' $1/startup-config 
+fi
 
 # Check if this is a bootstrap config or a config fetched from the device directly
 if grep -q "MIME-Version:" $1/startup-config; then
