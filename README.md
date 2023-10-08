@@ -1,7 +1,7 @@
 A template for Catalyst 8000v in controller mode(cEdge/SDWAN mode) with support for config export and import.
 Bootstrap configurations from vManage are also supported.
 
-# Usage
+# Installation
 
 The image used for testing is c8000v-universalk9.17.09.04.iso.
 
