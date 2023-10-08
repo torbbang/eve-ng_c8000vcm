@@ -13,16 +13,14 @@ if [ "$EUID" -ne 0 ]; then
     exit
 fi
 
-BASEDIR=$(cd --"$(dirname --"${BASH_SOURCE[0]}")"&>/dev/null&&pwd)
-
 echo "Copying templates and scripts"
-cp $BASEDIR/src/c8000vcm.yml /opt/unetlab/http/templates/intel/c8000vcm.yml
-cp $BASEDIR/src/c8000vcm.yml /opt/unetlab/http/templates/amd/c8000vcm.yml
-cp $BASEDIR/src/config_c8000vcm.py /opt/unetlab/config_scripts/config_c8000vcm.py
-cp $BASEDIR/src/prep_c8000vcm.py /opt/unetlab/config_scripts/prep_c8000vcm.py
+cp src/c8000vcm.yml /opt/unetlab/http/templates/intel/c8000vcm.yml
+cp src/c8000vcm.yml /opt/unetlab/http/templates/amd/c8000vcm.yml
+cp src/config_c8000vcm.py /opt/unetlab/config_scripts/config_c8000vcm.py
+cp src/prep_c8000vcm.py /opt/unetlab/config_scripts/prep_c8000vcm.py
 
 
 echo "Generating minimal config.iso"
-/bin/bash $BASEDIR/src/createConfigIso.sh
+/bin/bash src/createConfigIso.sh
 
 echo "Done!"
