@@ -14,8 +14,8 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 echo "Copying templates and scripts"
-cp src/c8000vcm.yml /opt/unetlab/http/templates/intel/c8000vcm.yml
-cp src/c8000vcm.yml /opt/unetlab/http/templates/amd/c8000vcm.yml
+cp src/c8000vcm.yml /opt/unetlab/addons/http/templates/intel/c8000vcm.yml
+cp src/c8000vcm.yml /opt/unetlab/addons/http/templates/amd/c8000vcm.yml
 cp src/config_c8000vcm.py /opt/unetlab/config_scripts/config_c8000vcm.py
 cp src/prep_c8000vcm.py /opt/unetlab/config_scripts/prep_c8000vcm.py
 
