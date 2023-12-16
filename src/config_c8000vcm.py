@@ -170,6 +170,34 @@ def node_quit(handler):
         handler.sendline('exit\n')
     handler.close()
 
+def bootstrap_create(ca-cert, config):
+
+def cacert_get(handler):
+    # Clearing all "expect" buffer
+    while True:
+        try:
+            handler.expect('#', timeout = 0.1)
+        except:
+            break
+
+    # Getting the cert
+    handler.sendline('more flash:sdwan/usr/share/viptela/root-ca.crt')
+    try:
+        handler.expect('#', timeout = longtimeout)
+    except:
+        print('ERROR: error waiting for "#" prompt.')
+        node_quit(handler)
+        return False
+    cacert = handler.before.decode()
+
+    # Manipulating the config
+    config = re.sub('\r', '', config, flags=re.DOTALL)                                                  # Unix style
+    config = re.sub('.*more flash:sdwan/usr/share/viptela/root-ca.crt\n', '', config, flags=re.DOTALL)  # Header
+    config = re.sub('\n\*.{20,22}%SEC_LOGIN-5-LOGIN_SUCCESS.*?\n', '', config, flags=re.DOTALL)         # Login log-message
+    config = re.sub('\n(?!.*\n).*', '', config, flags=re.DOTALL)                                        # Footer
+    
+    return cacert
+
 def config_get(handler):
     # Clearing all "expect" buffer
     while True:
@@ -257,15 +285,48 @@ def main(action, fiename, port):
                 print('ERROR: failed to retrieve config.')
                 node_quit(handler)
                 sys.exit(1)
+            cacert = cacert_get(handler)
+            if cacert in [False, None]:
+                print('ERROR: failed to retrieve config.')
+                node_quit(handler)
+                sys.exit(1)
+
+            bootstrapTemplate = ('Content-Type: multipart/mixed; boundary="==============u7fnxr6d=============="\n'   
+                                 'MIME-Version: 1.0\n'                                                                                                               
+                                 '--==============u7fnxr6d==============\n'  
+                                 '#cloud-config\n'  
+                                 'vinitparam:\n'  
+                                 ' - uuid : C8K-00000000-0000-0000-0000-000000000000\n'  
+                                 ' - otp : 00000000000000000000000000000000\n'  
+                                 ' - vbond : 203.0.113.1\n'  
+                                 ' - org : eve-lab\n'  
+                                 ' - rcc : true\n'  
+                                 'ca-certs:\n'  
+                                 '  trusted:\n'  
+                                 '  - |\n'  
+                                 '    {cacert}\n'  
+                                 '  remove-defaults: false\n'  
+                                 '--==============u7fnxr6d==============\n'  
+                                 '#cloud-boothook\n'  
+                                 '  {config}\n'  
+                                 '--==============u7fnxr6d==============--')    
+
+            # Prepend spaces to each line to achieve correct indentation
+            cacert = '\n'.join([ (4 * ' ') + line for line in cacert.split('\n') ])
+            config = '\n'.join([ (4 * ' ') + line for line in config.split('\n') ])
+
+            bootstrapConfig = bootstrapTemplate.format(config = config, cacert = cacert)
 
             try:
                 fd = open(filename, 'a')
-                fd.write(config)
+                fd.write(bootstrapConfig)
                 fd.close()
             except:
                 print('ERROR: cannot write config to file.')
                 node_quit(handler)
                 sys.exit(1)
+
+
         elif action == 'put':
             rc = config_put(handler)
             if rc != True:
