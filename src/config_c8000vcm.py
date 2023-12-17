@@ -261,10 +261,10 @@ def config_get(handler):
 def config_put(handler):
     while True:
         try:
-           i = handler.expect(['%IOSXE-5-PLATFORM: R0/0: vip-bootstrap: All daemons up',
-               '%IOSXE-3-PLATFORM: R0/0: vip-bootstrap: Error extracting config'], timeout)
+            i = handler.expect(['%IOSXE-5-PLATFORM: R0/0: vip-bootstrap: All daemons up',
+               '%IOSXE-3-PLATFORM: R0/0: vip-bootstrap: Error extracting config'], timeout * 8 )
         except:
-           return False
+            return False
         return True
 
 def usage():
@@ -287,7 +287,7 @@ def main(action, fiename, port):
         # Connect to the device
         tmp = conntimeout
         while (tmp > 0):
-            handler = pexpect.spawn('telnet 127.0.0.1 %i' %(port))
+            handler = pexpect.spawn('telnet eve.lab %i' %(port))
             time.sleep(0.1)
             tmp = tmp - 0.1
             if handler.isalive() == True:
@@ -451,7 +451,7 @@ if __name__ == "__main__":
             sys.exit(1)
 
     # Backgrounding the script
-    end_before = now() + timeout * 1000
+    end_before = now() + timeout * 10000
     p = multiprocessing.Process(target=main, name="Main", args=(action, filename, port))
     p.start()
 
