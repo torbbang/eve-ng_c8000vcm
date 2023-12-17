@@ -1,5 +1,5 @@
 A template for Catalyst 8000v in controller mode(cEdge/SDWAN mode) with support for config export and import.
-Bootstrap configurations from vManage are also supported.
+This will either accept a "regular" configurtion or a bootstrap configuration from vManage. If you have installed a non-default root certificate this will be exported and added to the bootstrap file.
 
 # Installation
 
@@ -34,7 +34,7 @@ cp config.iso /opt/unetlab/addons/qemu/c8000vcm-{version}
 **5.** Enjoy!
 
 **NOTE:** 
-Bootstrap configs are used to achieve loading of startup-config from EVE. The bootstrap process takes a minute to complete after boot. 
+Bootstrap configs are used to achieve loading of startup-config from EVE. The bootstrap process takes a few minutes to complete after boot. 
 If you attempt to start using the CLI before this has completed you will be faced with a user exec prompt and be presented the message "authentication failure" if you attempt to enter privileged mode.
 To get around this you simply wait a minute and enter "exit" to be presented with the regular login prompt.
 If you wait until the node is "ready" per the EVE UI you will not face this issue.
