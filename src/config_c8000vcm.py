@@ -287,7 +287,7 @@ def main(action, fiename, port):
         # Connect to the device
         tmp = conntimeout
         while (tmp > 0):
-            handler = pexpect.spawn('telnet eve.lab %i' %(port))
+            handler = pexpect.spawn('telnet 127.0.0.1 %i' %(port))
             time.sleep(0.1)
             tmp = tmp - 0.1
             if handler.isalive() == True:
