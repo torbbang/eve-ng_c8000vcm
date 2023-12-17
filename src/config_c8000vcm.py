@@ -182,9 +182,13 @@ def cacert_check(handler):
     try:
         handler.expect('#', timeout = longtimeout)
     except:
-        print('ERROR: error waiting for "#" prompt.')
-        node_quit(handler)
-        return False
+        handler.sendline('')
+        try:
+            handler.expect('#', timeout = longtimeout)
+        except:
+            print('ERROR: error waiting for "#" prompt.')
+            node_quit(handler)
+            return False
     rootChainOutput = handler.before.decode()
     # Check if first line of Viptela SubCA is present
     if len(rootChainOutput) > 2000:
