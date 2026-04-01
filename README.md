@@ -1,3 +1,9 @@
+> [!IMPORTANT]
+> ## 🚚 This project has moved to [git.torbjorn.dev](https://git.torbjorn.dev/torbbang/eve-ng_c8000vcm)
+> This GitHub repository is archived and no longer maintained.
+
+---
+
 A template for Catalyst 8000v in controller mode(cEdge/SDWAN mode) with support for config export and import.
 This will either accept a "regular" configurtion or a bootstrap configuration from vManage. If you have installed a non-default root certificate this will be exported and added to the bootstrap file.
 
